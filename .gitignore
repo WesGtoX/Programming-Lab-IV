@@ -117,3 +117,4 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
+/LabIV_classes_GUI/nbproject/private/
