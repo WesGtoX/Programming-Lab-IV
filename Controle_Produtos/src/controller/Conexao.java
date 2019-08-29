@@ -42,5 +42,4 @@ public class Conexao {
             System.out.println("Conexão realizada com sucesso!");
         }
     }
-    
 }

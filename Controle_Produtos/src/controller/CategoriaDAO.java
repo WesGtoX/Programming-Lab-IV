@@ -54,4 +54,30 @@ public class CategoriaDAO {
             Conexao.desconectar(con);
         }
     }
+    
+    public Categoria pesquisarPorId(int id) {
+        try {
+            String SQL = "SELECT * FROM tb_categoria WHERE id = ?";
+            
+            // Analisar sinstaticamente a instrução SQL
+            cmd = con.prepareStatement(SQL);
+            cmd.setInt(1, id);
+            
+            // Executar a instrução
+            ResultSet rs = cmd.executeQuery();
+            
+            if (rs.next()) {
+                return new Categoria(
+                    rs.getInt("id"),
+                    rs.getString("nome")
+                );
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            return null;
+        } finally {
+            Conexao.desconectar(con);
+        }
+    }
 }

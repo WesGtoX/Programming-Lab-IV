@@ -6,12 +6,14 @@
 package view;
 
 import controller.CategoriaDAO;
+import controller.ProdutoDAO;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Categoria;
+import model.Produto;
 
 /**
  *
@@ -110,6 +112,12 @@ public class FormProduto extends javax.swing.JFrame {
 
         rdbNome.setText("Nome");
 
+        txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyReleased(evt);
+            }
+        });
+
         tbProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -121,6 +129,11 @@ public class FormProduto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbProdutosMouseClicked(evt);
+            }
+        });
         scpPesquisar.setViewportView(tbProdutos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -210,7 +223,7 @@ public class FormProduto extends javax.swing.JFrame {
                     .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scpPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -218,10 +231,53 @@ public class FormProduto extends javax.swing.JFrame {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         estado(true);
+        
+        // Limpar campos
+        limparCampos();
+        
+        txtNome.requestFocus();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         estado(false);
+        
+        // Criar um objeto para parametrizar a operação
+        Produto p = new Produto();
+        
+        // Recuperar o ID da categoria no COMBO categoria
+        Categoria c = (Categoria)cbxCategoria.getSelectedItem();
+        p.setId_categoria(c.getId());
+        
+        // Recuperar o NOME do produto
+        p.setNome(txtNome.getText());
+        
+        // Recuperar o VALOR UNITÁRIO do produto
+        double vunit = Double.parseDouble(
+            txtValorUnitario.getText().replace(',', '.'));
+        p.setValorunitario(vunit);
+        
+        int id = -1;
+        if (txtId.getText().isEmpty()) {
+            // Inserir o REGISTRO na tabela
+            id = new ProdutoDAO().inserir(p);
+        } else {
+            // Atualizar o REGISTRO tabela
+            p.setId(Integer.parseInt(txtId.getText()));
+            id = new ProdutoDAO().atualizar(p);
+        }
+        if (id != -1) {
+            txtId.setText(Integer.toString(id));
+            
+            // Preencher tabela com dados do banco
+            preencherTabela(new ProdutoDAO().listar());
+            
+            // Limpar campos
+            limparCampos();
+            
+            JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Não foi possível realizar a operação!!");
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -238,13 +294,81 @@ public class FormProduto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Selecione um registro para excluir.");
             estado(false);
         } else {
-            estado(true);
+            estado(false);
+
+            // Criar um objeto para parametrizar a operação
+            Produto p = new Produto();
+
+            // Recuperar o ID da categoria no COMBO categoria
+            Categoria c = (Categoria)cbxCategoria.getSelectedItem();
+            p.setId_categoria(c.getId());
+
+            // Recuperar o NOME do produto
+            p.setNome(txtNome.getText());
+
+            // Recuperar o VALOR UNITÁRIO do produto
+            double vunit = Double.parseDouble(
+                txtValorUnitario.getText().replace(',', '.'));
+            p.setValorunitario(vunit);
+
+            int id = -1;
+
+            // Deletar o REGISTRO tabela
+            p.setId(Integer.parseInt(txtId.getText()));
+            id = new ProdutoDAO().deletar(p);
+
+            if (id != -1) {
+                txtId.setText(Integer.toString(id));
+
+                // Preencher tabela com dados do banco
+                preencherTabela(new ProdutoDAO().listar());
+
+                // Limpar campos
+                limparCampos();
+
+                JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível realizar a operação!!");
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         estado(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void tbProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosMouseClicked
+        
+        int linha = tbProdutos.getSelectedRow();
+        if (linha >= 0) {
+            txtId.setText(tbProdutos.getValueAt(linha, 0).toString());
+            txtNome.setText(tbProdutos.getValueAt(linha, 1).toString());
+            txtValorUnitario.setText(tbProdutos.getValueAt(linha, 3).toString());
+            
+            Categoria c = (Categoria)tbProdutos.getValueAt(linha, 2);
+            cbxCategoria.getModel().setSelectedItem(c);
+        }
+        
+    }//GEN-LAST:event_tbProdutosMouseClicked
+
+    private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
+        String chave = txtPesquisar.getText();
+        List<Produto> resultado = null;
+        
+        if (chave.isEmpty()) {
+            resultado = new ProdutoDAO().listar();
+        } else {
+            if (rdbNome.isSelected()) {
+                resultado = new ProdutoDAO().pesquisarPorNome(chave);
+            } else if (rdbId.isSelected()) {
+                
+            }
+        }
+        
+        if (resultado != null) {
+            preencherTabela(resultado);
+        }
+    }//GEN-LAST:event_txtPesquisarKeyReleased
 
     /**
      * @param args the command line arguments
@@ -319,6 +443,7 @@ public class FormProduto extends javax.swing.JFrame {
         configurarTabela();
         estado(false);
         preencherCategoria();
+        preencherTabela(new ProdutoDAO().listar());
     }
     
     private void configurarTabela() {
@@ -347,7 +472,6 @@ public class FormProduto extends javax.swing.JFrame {
     }
     
     private void preencherCategoria() {
-        
         List<Categoria> lista = new CategoriaDAO().listar();
         if(lista != null) {
             DefaultComboBoxModel m = new DefaultComboBoxModel();
@@ -356,5 +480,30 @@ public class FormProduto extends javax.swing.JFrame {
             }
             cbxCategoria.setModel(m);
         }
+    }
+    
+    private void preencherTabela(List<Produto> lista) {
+        if (lista != null) {
+            if (lista.size() > 0) {
+                configurarTabela();
+                DefaultTableModel m = (DefaultTableModel)tbProdutos.getModel();
+                for (Produto p : lista) {
+                    m.addRow(new Object[] {
+                        p.getId(),
+                        p.getNome(),
+                        new CategoriaDAO().pesquisarPorId(p.getId_categoria()),
+                        p.getValorunitario()
+                    });
+                }
+                tbProdutos.setModel(m);
+            }
+        }
+    }
+    
+    private void limparCampos() {
+        txtId.setText("");
+        txtNome.setText("");
+        txtValorUnitario.setText("");
+        cbxCategoria.setSelectedIndex(0);
     }
 }

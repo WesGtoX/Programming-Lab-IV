@@ -126,7 +126,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="scpPesquisar" min="-2" pref="195" max="-2" attributes="0"/>
-              <EmptySpace pref="52" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -231,6 +231,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPesquisar">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPesquisarKeyReleased"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="scpPesquisar">
       <AuxValues>
@@ -250,6 +253,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbProdutosMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
