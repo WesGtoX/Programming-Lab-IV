@@ -58,6 +58,8 @@ public class FormProduto extends javax.swing.JFrame {
         txtPesquisar = new javax.swing.JTextField();
         scpPesquisar = new javax.swing.JScrollPane();
         tbProdutos = new javax.swing.JTable();
+        lblTotalRegistros = new javax.swing.JLabel();
+        txtTotalRegistros = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +138,9 @@ public class FormProduto extends javax.swing.JFrame {
         });
         scpPesquisar.setViewportView(tbProdutos);
 
+        lblTotalRegistros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblTotalRegistros.setText("Total de registros");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,7 +185,11 @@ public class FormProduto extends javax.swing.JFrame {
                                 .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblPesquisar))
+                            .addComponent(lblPesquisar)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTotalRegistros)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -223,6 +232,10 @@ public class FormProduto extends javax.swing.JFrame {
                     .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scpPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotalRegistros)
+                    .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -290,46 +303,30 @@ public class FormProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (txtId.getText().isEmpty()) {
+        
+      if (txtId.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Selecione um registro para excluir.");
             estado(false);
-        } else {
-            estado(false);
-
-            // Criar um objeto para parametrizar a operação
-            Produto p = new Produto();
-
-            // Recuperar o ID da categoria no COMBO categoria
-            Categoria c = (Categoria)cbxCategoria.getSelectedItem();
-            p.setId_categoria(c.getId());
-
-            // Recuperar o NOME do produto
-            p.setNome(txtNome.getText());
-
-            // Recuperar o VALOR UNITÁRIO do produto
-            double vunit = Double.parseDouble(
-                txtValorUnitario.getText().replace(',', '.'));
-            p.setValorunitario(vunit);
-
-            int id = -1;
-
-            // Deletar o REGISTRO tabela
-            p.setId(Integer.parseInt(txtId.getText()));
-            id = new ProdutoDAO().deletar(p);
-
-            if (id != -1) {
-                txtId.setText(Integer.toString(id));
-
+        }else{
+            int resp = JOptionPane.showConfirmDialog(null, 
+                "Tem certeza que deseja excluir o registro?",
+                "Controle de Produtos", JOptionPane.YES_NO_OPTION);
+            
+            if (resp == JOptionPane.YES_OPTION){
+                // Deletar o REGISTRO tabela
+                int id = Integer.parseInt(txtId.getText());
+                new ProdutoDAO().deletar(id);
+                
                 // Preencher tabela com dados do banco
                 preencherTabela(new ProdutoDAO().listar());
 
                 // Limpar campos
                 limparCampos();
-
                 JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!");
             } else {
-                JOptionPane.showMessageDialog(null, "Não foi possível realizar a operação!!");
+                JOptionPane.showMessageDialog(null, "Operação cancelada!!");
             }
+            estado(false);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -352,16 +349,18 @@ public class FormProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_tbProdutosMouseClicked
 
     private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
+        
+        // Pesquisar por NOME e ID
         String chave = txtPesquisar.getText();
         List<Produto> resultado = null;
         
         if (chave.isEmpty()) {
             resultado = new ProdutoDAO().listar();
         } else {
-            if (rdbNome.isSelected()) {
+            if (rdbNome.isSelected()) {     // Pesquisar por NOME
                 resultado = new ProdutoDAO().pesquisarPorNome(chave);
-            } else if (rdbId.isSelected()) {
-                
+            } else if (rdbId.isSelected()) {    // Pesquisar por ID
+                resultado = new ProdutoDAO().pesquisarPorId(Integer.parseInt(chave));
             }
         }
         
@@ -417,6 +416,7 @@ public class FormProduto extends javax.swing.JFrame {
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblPesquisar;
+    private javax.swing.JLabel lblTotalRegistros;
     private javax.swing.JLabel lblValorUnitario;
     private javax.swing.JRadioButton rdbId;
     private javax.swing.JRadioButton rdbNome;
@@ -425,6 +425,7 @@ public class FormProduto extends javax.swing.JFrame {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtPesquisar;
+    private javax.swing.JTextField txtTotalRegistros;
     private javax.swing.JTextField txtValorUnitario;
     // End of variables declaration//GEN-END:variables
 
@@ -433,6 +434,7 @@ public class FormProduto extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         txtId.setEnabled(false);
+        txtTotalRegistros.setEnabled(false);
         
         ButtonGroup bg =new ButtonGroup();
         bg.add(rdbId);
@@ -491,11 +493,13 @@ public class FormProduto extends javax.swing.JFrame {
                     m.addRow(new Object[] {
                         p.getId(),
                         p.getNome(),
+//                        p.getId_categoria(),
                         new CategoriaDAO().pesquisarPorId(p.getId_categoria()),
                         p.getValorunitario()
                     });
                 }
                 tbProdutos.setModel(m);
+                txtTotalRegistros.setText(Integer.toString(lista.size()));
             }
         }
     }

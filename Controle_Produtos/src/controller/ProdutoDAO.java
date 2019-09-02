@@ -23,7 +23,7 @@ public class ProdutoDAO {
     
     public int inserir(Produto p) {
         try {
-            String SQL = "INSERT INTO tb_produtos (id_categoria, nome, valorunitario) VALUES (?,?,?)";
+            String SQL = "INSERT INTO tb_produto (id_categoria, nome, valorunitario) VALUES (?,?,?)";
             
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             cmd.setInt(1, p.getId_categoria());
@@ -53,7 +53,7 @@ public class ProdutoDAO {
     
     public int atualizar(Produto p) {
         try {
-            String SQL = "UPDATE tb_produtos SET id_categoria=?, nome=?, valorunitario=? WHERE id=?";
+            String SQL = "UPDATE tb_produto SET id_categoria=?, nome=?, valorunitario=? WHERE id=?";
             
             cmd = con.prepareStatement(SQL);
             cmd.setInt(1, p.getId_categoria());
@@ -71,14 +71,14 @@ public class ProdutoDAO {
         }
     }
     
-    public int deletar(Produto p) {
+    public int deletar(int id) {
         try {
-            String SQL = "DELETE FROM tb_produtos WHERE id=?";
+            String SQL = "DELETE FROM tb_produto WHERE id=?";
             
             cmd = con.prepareStatement(SQL);
-            cmd.setInt(1, p.getId());
+            cmd.setInt(1, id);
             
-            return (cmd.executeUpdate() > 0) ? p.getId() : -1;
+            return (cmd.executeUpdate() > 0) ? id : -1;
             
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());
@@ -90,7 +90,7 @@ public class ProdutoDAO {
     
     public List<Produto> listar() {
         try {
-            String SQL = "SELECT * FROM tb_produtos ORDER BY id";
+            String SQL = "SELECT * FROM tb_produto ORDER BY id";
             
             // Analisar sinstaticamente a instrução SQL
             cmd = con.prepareStatement(SQL);
@@ -120,11 +120,43 @@ public class ProdutoDAO {
     
     public List<Produto> pesquisarPorNome(String nome) {
         try {
-            String SQL = "SELECT * FROM tb_produtos WHERE nome ILIKE ? ORDER BY nome";
+            String SQL = "SELECT * FROM tb_produto WHERE nome ILIKE ? ORDER BY nome";
             
             // Analisar sinstaticamente a instrução SQL
             cmd = con.prepareStatement(SQL);
             cmd.setString(1,"%" + nome + "%");
+            
+            // Executar a instrução
+            ResultSet rs = cmd.executeQuery();
+            
+            List<Produto> lista = new ArrayList<>();
+            while(rs.next()) {
+                lista.add(
+                    new Produto(
+                        rs.getInt("id"),
+                        rs.getInt("id_categoria"),
+                        rs.getString("nome"),
+                        rs.getDouble("valorunitario")
+                    )
+                );
+            }
+            return lista;
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            return null;
+        } finally {
+            Conexao.desconectar(con);
+        }
+    }
+    
+    public List<Produto> pesquisarPorId(int id) {
+        try {
+            String SQL = "SELECT * FROM tb_produto WHERE id=?";
+            
+            // Analisar sinstaticamente a instrução SQL
+            cmd = con.prepareStatement(SQL);
+//            cmd.setString(1,"%" + id + "%");
+            cmd.setInt(1, id);
             
             // Executar a instrução
             ResultSet rs = cmd.executeQuery();
