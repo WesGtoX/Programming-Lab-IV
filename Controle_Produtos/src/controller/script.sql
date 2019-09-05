@@ -3,6 +3,10 @@
  * Created: Aug 15, 2019
  */
 
+-- drop tables id exists
+DROP TABLE IF EXISTS tb_produto;
+DROP TABLE IF EXISTS tb_categoria;
+
 -- create database tb_categoria
 CREATE TABLE tb_categoria(
 	id SERIAL PRIMARY KEY,

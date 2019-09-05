@@ -18,6 +18,7 @@ public class ProdutoDAO {
     private PreparedStatement cmd;    // enviar instruções SQL para o SGBD
     
     public ProdutoDAO() {
+        // estabelecer uma conexão com SGBD
         this.con = Conexao.conectar();
     }
     

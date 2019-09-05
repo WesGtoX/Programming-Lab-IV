@@ -6,25 +6,22 @@
 package view;
 
 import controller.CategoriaDAO;
-import controller.ProdutoDAO;
 import java.util.List;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Categoria;
-import model.Produto;
 
 /**
  *
  * @author wesley
  */
-public class FormProduto extends javax.swing.JFrame {
+public class FormCategoria extends javax.swing.JFrame {
 
     /**
      * Creates new form FormProduto
      */
-    public FormProduto() {
+    public FormCategoria() {
         initComponents();
         configurarFormulario();
     }
@@ -40,12 +37,8 @@ public class FormProduto extends javax.swing.JFrame {
 
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        lblNome = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
-        lblCategoria = new javax.swing.JLabel();
-        cbxCategoria = new javax.swing.JComboBox<>();
-        lblValorUnitario = new javax.swing.JLabel();
-        txtValorUnitario = new javax.swing.JTextField();
+        lblNomeCategoria = new javax.swing.JLabel();
+        txtNomeCategoria = new javax.swing.JTextField();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -54,25 +47,19 @@ public class FormProduto extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lblPesquisar = new javax.swing.JLabel();
         rdbId = new javax.swing.JRadioButton();
-        rdbNome = new javax.swing.JRadioButton();
+        rdbCategoria = new javax.swing.JRadioButton();
         txtPesquisar = new javax.swing.JTextField();
         scpPesquisar = new javax.swing.JScrollPane();
-        tbProdutos = new javax.swing.JTable();
+        tbCategoria = new javax.swing.JTable();
         lblTotalRegistros = new javax.swing.JLabel();
         txtTotalRegistros = new javax.swing.JTextField();
-        btnInserirCategoria = new javax.swing.JButton();
+        btnInserirProduto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblId.setText("ID");
 
-        lblNome.setText("Nome");
-
-        lblCategoria.setText("Categoria");
-
-        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lblValorUnitario.setText("Valor Unitário");
+        lblNomeCategoria.setText("Nome da Categoria");
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +100,7 @@ public class FormProduto extends javax.swing.JFrame {
 
         rdbId.setText("ID");
 
-        rdbNome.setText("Nome");
+        rdbCategoria.setText("Categoria");
 
         txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -121,7 +108,7 @@ public class FormProduto extends javax.swing.JFrame {
             }
         });
 
-        tbProdutos.setModel(new javax.swing.table.DefaultTableModel(
+        tbCategoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -132,21 +119,21 @@ public class FormProduto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tbProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbCategoria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbProdutosMouseClicked(evt);
+                tbCategoriaMouseClicked(evt);
             }
         });
-        scpPesquisar.setViewportView(tbProdutos);
+        scpPesquisar.setViewportView(tbCategoria);
 
         lblTotalRegistros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblTotalRegistros.setText("Total de registros");
 
-        btnInserirCategoria.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnInserirCategoria.setText("Inserir Categoria");
-        btnInserirCategoria.addActionListener(new java.awt.event.ActionListener() {
+        btnInserirProduto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnInserirProduto.setText("Inserir Produto");
+        btnInserirProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInserirCategoriaActionPerformed(evt);
+                btnInserirProdutoActionPerformed(evt);
             }
         });
 
@@ -159,27 +146,20 @@ public class FormProduto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtValorUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblValorUnitario)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblId)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCategoria))
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblNome)
+                                .addComponent(lblNomeCategoria)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtNome)))
+                            .addComponent(txtNomeCategoria)))
                     .addComponent(scpPesquisar)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(rdbId)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rdbNome)
+                        .addComponent(rdbCategoria)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtPesquisar))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +168,7 @@ public class FormProduto extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnInserirCategoria))
+                            .addComponent(btnInserirProduto))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
@@ -215,17 +195,9 @@ public class FormProduto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNome)
+                        .addComponent(lblNomeCategoria)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCategoria)
-                    .addComponent(lblValorUnitario))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtValorUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNomeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
@@ -240,7 +212,7 @@ public class FormProduto extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdbId)
-                    .addComponent(rdbNome)
+                    .addComponent(rdbCategoria)
                     .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scpPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,7 +220,7 @@ public class FormProduto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotalRegistros)
                     .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnInserirCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnInserirProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -261,41 +233,32 @@ public class FormProduto extends javax.swing.JFrame {
         // Limpar campos
         limparCampos();
         
-        txtNome.requestFocus();
+        txtNomeCategoria.requestFocus();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         estado(false);
         
         // Criar um objeto para parametrizar a operação
-        Produto p = new Produto();
+        Categoria p = new Categoria();
         
-        // Recuperar o ID da categoria no COMBO categoria
-        Categoria c = (Categoria)cbxCategoria.getSelectedItem();
-        p.setId_categoria(c.getId());
-        
-        // Recuperar o NOME do produto
-        p.setNome(txtNome.getText());
-        
-        // Recuperar o VALOR UNITÁRIO do produto
-        double vunit = Double.parseDouble(
-            txtValorUnitario.getText().replace(',', '.'));
-        p.setValorunitario(vunit);
+        // Recuperar o NOME da categoria
+        p.setNome(txtNomeCategoria.getText());
         
         int id = -1;
         if (txtId.getText().isEmpty()) {
             // Inserir o REGISTRO na tabela
-            id = new ProdutoDAO().inserir(p);
+            id = new CategoriaDAO().inserir(p);
         } else {
             // Atualizar o REGISTRO tabela
             p.setId(Integer.parseInt(txtId.getText()));
-            id = new ProdutoDAO().atualizar(p);
+            id = new CategoriaDAO().atualizar(p);
         }
         if (id != -1) {
             txtId.setText(Integer.toString(id));
             
             // Preencher tabela com dados do banco
-            preencherTabela(new ProdutoDAO().listar());
+            preencherTabela(new CategoriaDAO().listar());
             
             // Limpar campos
             limparCampos();
@@ -328,10 +291,10 @@ public class FormProduto extends javax.swing.JFrame {
             if (resp == JOptionPane.YES_OPTION){
                 // Deletar o REGISTRO tabela
                 int id = Integer.parseInt(txtId.getText());
-                new ProdutoDAO().deletar(id);
+                new CategoriaDAO().deletar(id);
                 
                 // Preencher tabela com dados do banco
-                preencherTabela(new ProdutoDAO().listar());
+                preencherTabela(new CategoriaDAO().listar());
 
                 // Limpar campos
                 limparCampos();
@@ -347,33 +310,32 @@ public class FormProduto extends javax.swing.JFrame {
         estado(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void tbProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosMouseClicked
+    private void tbCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCategoriaMouseClicked
         
-        int linha = tbProdutos.getSelectedRow();
+        int linha = tbCategoria.getSelectedRow();
         if (linha >= 0) {
-            txtId.setText(tbProdutos.getValueAt(linha, 0).toString());
-            txtNome.setText(tbProdutos.getValueAt(linha, 1).toString());
-            txtValorUnitario.setText(tbProdutos.getValueAt(linha, 3).toString());
-            
-            Categoria c = (Categoria)tbProdutos.getValueAt(linha, 2);
-            cbxCategoria.getModel().setSelectedItem(c);
+            txtId.setText(tbCategoria.getValueAt(linha, 0).toString());
+            txtNomeCategoria.setText(tbCategoria.getValueAt(linha, 1).toString());
+
+//            Categoria c = (Categoria)tbCategoria.getValueAt(linha, 2);
+//            cbxCategoria.getModel().setSelectedItem(c);
         }
         
-    }//GEN-LAST:event_tbProdutosMouseClicked
+    }//GEN-LAST:event_tbCategoriaMouseClicked
 
     private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
         
         // Pesquisar por NOME e ID
         String chave = txtPesquisar.getText();
-        List<Produto> resultado = null;
+        List<Categoria> resultado = null;
         
         if (chave.isEmpty()) {
-            resultado = new ProdutoDAO().listar();
+            resultado = new CategoriaDAO().listar();
         } else {
-            if (rdbNome.isSelected()) {     // Pesquisar por NOME
-                resultado = new ProdutoDAO().pesquisarPorNome(chave);
+            if (rdbCategoria.isSelected()) {     // Pesquisar por NOME
+                resultado = new CategoriaDAO().pesquisarPorNome(chave);
             } else if (rdbId.isSelected()) {    // Pesquisar por ID
-                resultado = new ProdutoDAO().pesquisarPorId(Integer.parseInt(chave));
+                resultado = new CategoriaDAO().pesquisarPorId(Integer.parseInt(chave));
             }
         }
         
@@ -382,10 +344,10 @@ public class FormProduto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtPesquisarKeyReleased
 
-    private void btnInserirCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirCategoriaActionPerformed
-        FormCategoria frmc = new FormCategoria();
-        frmc.setVisible(true);
-    }//GEN-LAST:event_btnInserirCategoriaActionPerformed
+    private void btnInserirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirProdutoActionPerformed
+        FormProduto frmp = new FormProduto();
+        frmp.setVisible(true);
+    }//GEN-LAST:event_btnInserirProdutoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -404,20 +366,21 @@ public class FormProduto extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormProduto().setVisible(true);
+                new FormCategoria().setVisible(true);
             }
         });
     }
@@ -426,30 +389,26 @@ public class FormProduto extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnInserirCategoria;
+    private javax.swing.JButton btnInserirProduto;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<String> cbxCategoria;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblId;
-    private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblNomeCategoria;
     private javax.swing.JLabel lblPesquisar;
     private javax.swing.JLabel lblTotalRegistros;
-    private javax.swing.JLabel lblValorUnitario;
+    private javax.swing.JRadioButton rdbCategoria;
     private javax.swing.JRadioButton rdbId;
-    private javax.swing.JRadioButton rdbNome;
     private javax.swing.JScrollPane scpPesquisar;
-    private javax.swing.JTable tbProdutos;
+    private javax.swing.JTable tbCategoria;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtNomeCategoria;
     private javax.swing.JTextField txtPesquisar;
     private javax.swing.JTextField txtTotalRegistros;
-    private javax.swing.JTextField txtValorUnitario;
     // End of variables declaration//GEN-END:variables
 
     private void configurarFormulario() {
-        this.setTitle("Controle de Produtos");
+        this.setTitle("Controle de Categoria");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         txtId.setEnabled(false);
@@ -457,32 +416,29 @@ public class FormProduto extends javax.swing.JFrame {
         
         ButtonGroup bg =new ButtonGroup();
         bg.add(rdbId);
-        bg.add(rdbNome);
-        rdbNome.setSelected(true);
+        bg.add(rdbCategoria);
+        rdbCategoria.setSelected(true);
         
         // functions init
         configurarTabela();
         estado(false);
-        preencherCategoria();
-        preencherTabela(new ProdutoDAO().listar());
+        preencherTabela(new CategoriaDAO().listar());
     }
     
     private void configurarTabela() {
         DefaultTableModel m = new DefaultTableModel(
-            new Object[]{"ID","Nome","Categoria","Valor Unitário"}, 0) {
+            new Object[]{"ID","Nome da Categoria"}, 0) {
                 
             @Override
             public boolean isCellEditable(int row, int colum) {
                 return false;
             }
         };
-        tbProdutos.setModel(m);
+        tbCategoria.setModel(m);
     }
     
     private void estado(boolean e) {
-        txtNome.setEnabled(e);
-        cbxCategoria.setEnabled(e);
-        txtValorUnitario.setEnabled(e);
+        txtNomeCategoria.setEnabled(e);
         btnSalvar.setEnabled(e);
 
         txtPesquisar.setEnabled(!e);
@@ -492,32 +448,18 @@ public class FormProduto extends javax.swing.JFrame {
         btnCancelar.setEnabled(e);
     }
     
-    private void preencherCategoria() {
-        List<Categoria> lista = new CategoriaDAO().listar();
-        if(lista != null) {
-            DefaultComboBoxModel m = new DefaultComboBoxModel();
-            for(Categoria c : lista) {
-                m.addElement(c);
-            }
-            cbxCategoria.setModel(m);
-        }
-    }
-    
-    private void preencherTabela(List<Produto> lista) {
+    private void preencherTabela(List<Categoria> lista) {
         if (lista != null) {
             if (lista.size() > 0) {
                 configurarTabela();
-                DefaultTableModel m = (DefaultTableModel)tbProdutos.getModel();
-                for (Produto p : lista) {
+                DefaultTableModel m = (DefaultTableModel)tbCategoria.getModel();
+                for (Categoria c : lista) {
                     m.addRow(new Object[] {
-                        p.getId(),
-                        p.getNome(),
-//                        p.getId_categoria(),
-                        new CategoriaDAO().pesquisarPorId(p.getId_categoria()),
-                        p.getValorunitario()
+                        c.getId(),
+                        c.getNome(),
                     });
                 }
-                tbProdutos.setModel(m);
+                tbCategoria.setModel(m);
                 txtTotalRegistros.setText(Integer.toString(lista.size()));
             }
         }
@@ -525,8 +467,6 @@ public class FormProduto extends javax.swing.JFrame {
     
     private void limparCampos() {
         txtId.setText("");
-        txtNome.setText("");
-        txtValorUnitario.setText("");
-        cbxCategoria.setSelectedIndex(0);
+        txtNomeCategoria.setText("");
     }
 }
