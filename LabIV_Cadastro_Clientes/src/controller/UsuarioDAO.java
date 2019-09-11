@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import model.Usuario;
 
 /**
@@ -45,6 +47,36 @@ public class UsuarioDAO {
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());
             return -1;
+        } finally {
+            Conexao.desconectar(con);
+        }
+    }
+    
+    public List<Usuario> carregar() {
+        try {
+            String SQL = "SELECT * FROM tb_usuario ORDER BY id";
+            
+            // Analisar sinstaticamente a instrução SQL
+            cmd = con.prepareStatement(SQL);
+            
+            // Executar a instrução
+            ResultSet rs = cmd.executeQuery();
+            
+            List<Usuario> lista = new ArrayList<>();
+            while(rs.next()) {
+                lista.add(
+                    new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("login"),
+                        rs.getString("senha"),
+                        rs.getBoolean("ativo")
+                    )
+                );
+            }
+            return lista;
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            return null;
         } finally {
             Conexao.desconectar(con);
         }

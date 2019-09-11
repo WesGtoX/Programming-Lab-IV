@@ -1,6 +1,11 @@
 package view;
 
+import controller.UsuarioDAO;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.List;
 import javax.swing.JOptionPane;
+import model.Usuario;
 
 /**
  *
@@ -13,6 +18,7 @@ public class FormLogin extends javax.swing.JFrame {
      */
     public FormLogin() {
         initComponents();
+        configurarFormulario();
     }
 
     /**
@@ -104,22 +110,53 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         
-        String usr = txtUsuario.getText();;;
-        String pwd = new String(txtSenha.getPassword());
+        List<Usuario> carregar = new UsuarioDAO().carregar();
+        System.out.println(carregar);
         
-        if (usr.toUpperCase().equals("ADMIN") && pwd.equals("admin")) {
-            // Abrir o formulario
-            FormPesquisar frm = new FormPesquisar();
-            frm.setExtendedState(MAXIMIZED_BOTH);
-            frm.setVisible(true);
-        } else {
+        String usr = txtUsuario.getText();
+        String pwd = new String(txtSenha.getPassword());
+        boolean login = false;
+        MessageDigest m;
+        
+        try {
+            m = MessageDigest.getInstance("MD5");
+            m.reset(); // <---- Reseta antes de fazer o password
+            m.update(pwd.getBytes(), 0, pwd.length());
+            BigInteger pwd1 = new BigInteger(1, m.digest());
+            pwd = String.format("%1$032X", pwd1);
+
+            System.out.println("Teste MD5: " + pwd);
+        } catch (Exception e) {
+            
+        }
+        
+        for (Usuario user : carregar) {
+            if (user.isAtivo()) {
+                if (usr.toUpperCase().equals(user.getLogin().toUpperCase()) && pwd.equals(user.getSenha().toUpperCase())) {
+                    // Abrir o formulario
+                    FormPesquisar frm = new FormPesquisar();
+                    frm.setExtendedState(MAXIMIZED_BOTH);
+                    frm.setVisible(true);
+                    login = true;
+                    this.dispose();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null,"Usuário inativo.",
+                        "Login",JOptionPane.ERROR_MESSAGE);
+                txtUsuario.setText("");
+                txtSenha.setText("");
+                txtUsuario.requestFocusInWindow();
+            }
+        }
+        
+        if (login == false) {
             JOptionPane.showMessageDialog(null,"Usuário ou senha inválido.",
                     "Login",JOptionPane.ERROR_MESSAGE);
             txtUsuario.setText("");
             txtSenha.setText("");
             txtUsuario.requestFocusInWindow();
         }
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**

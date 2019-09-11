@@ -12,7 +12,7 @@ public class Conexao {
     private static final String SERVER_PORT = "5432";
     private static final String SERVER_USER = "wesley";
     private static final String SERVER_PASSWORD = "";
-    private static final String SERVER_DATABSE = "controle_produtos";
+    private static final String SERVER_DATABSE = "cadastro_clientes";
     
     public static Connection conectar() {
         try {
