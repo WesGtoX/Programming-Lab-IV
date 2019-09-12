@@ -53,11 +53,3 @@ SELECT * FROM tb_aluno as a INNER JOIN tb_curso as c ON (a.id_curso = c.id);
 
 SELECT * FROM tb_curso ORDER BY id;
 SELECT * FROM tb_aluno ORDER BY id;
-
-
-
-
-
-
-
-

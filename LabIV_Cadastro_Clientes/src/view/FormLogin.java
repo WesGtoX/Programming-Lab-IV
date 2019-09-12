@@ -56,6 +56,11 @@ public class FormLogin extends javax.swing.JFrame {
 
         btnCadastrar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         lblSenha.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblSenha.setText("Senha:");
@@ -65,23 +70,19 @@ public class FormLogin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSenha)
+                    .addComponent(imgProfile, javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblUsuario, javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblSenha, javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                .addComponent(lblUsuario)
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblSenha)
-                                .addComponent(imgProfile)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1))
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,8 +111,7 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         
-        List<Usuario> carregar = new UsuarioDAO().carregar();
-        System.out.println(carregar);
+        List<Usuario> carregar = new UsuarioDAO().listar();
         
         String usr = txtUsuario.getText();
         String pwd = new String(txtSenha.getPassword());
@@ -120,12 +120,10 @@ public class FormLogin extends javax.swing.JFrame {
         
         try {
             m = MessageDigest.getInstance("MD5");
-            m.reset(); // <---- Reseta antes de fazer o password
+            m.reset();
             m.update(pwd.getBytes(), 0, pwd.length());
             BigInteger pwd1 = new BigInteger(1, m.digest());
             pwd = String.format("%1$032X", pwd1);
-
-            System.out.println("Teste MD5: " + pwd);
         } catch (Exception e) {
             
         }
@@ -134,8 +132,8 @@ public class FormLogin extends javax.swing.JFrame {
             if (user.isAtivo()) {
                 if (usr.toUpperCase().equals(user.getLogin().toUpperCase()) && pwd.equals(user.getSenha().toUpperCase())) {
                     // Abrir o formulario
-                    FormPesquisar frm = new FormPesquisar();
-                    frm.setExtendedState(MAXIMIZED_BOTH);
+                    FormPrincipal frm = new FormPrincipal();
+//                    frm.setExtendedState(MAXIMIZED_BOTH);
                     frm.setVisible(true);
                     login = true;
                     this.dispose();
@@ -158,6 +156,13 @@ public class FormLogin extends javax.swing.JFrame {
         }
 //        this.dispose();
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        // Abrir o formulario CADASTRAR USUÁRIO
+        FormCadastrarUsuario frm = new FormCadastrarUsuario();
+        frm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,19 +213,14 @@ public class FormLogin extends javax.swing.JFrame {
     private void configurarFormulario(){
         //titulo do formulario
         this.setTitle("Login");
-
         //posicionamento do formulario
         this.setLocationRelativeTo(null);
-
         //redimensionamento
         this.setResizable(false);
-
         //foco do curso no JTextField txtUsuario
         txtUsuario.requestFocus();
-        
         //Adicionar botão utilizando a combinação Alt + E
         btnEntrar.setMnemonic('e');
-        
         //Dica do botão
         btnEntrar.setToolTipText("Clique no botão para entrar no sistema");
     }

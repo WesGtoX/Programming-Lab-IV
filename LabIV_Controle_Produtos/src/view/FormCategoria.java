@@ -310,7 +310,6 @@ public class FormCategoria extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void tbCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCategoriaMouseClicked
-        
         int linha = tbCategoria.getSelectedRow();
         if (linha >= 0) {
             txtId.setText(tbCategoria.getValueAt(linha, 0).toString());
@@ -319,7 +318,6 @@ public class FormCategoria extends javax.swing.JFrame {
 //            Categoria c = (Categoria)tbCategoria.getValueAt(linha, 2);
 //            cbxCategoria.getModel().setSelectedItem(c);
         }
-        
     }//GEN-LAST:event_tbCategoriaMouseClicked
 
     private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased

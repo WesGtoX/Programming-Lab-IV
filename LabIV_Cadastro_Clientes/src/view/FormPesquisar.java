@@ -1,21 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
+
+import controller.ClienteDAO;
+import controller.UsuarioDAO;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import model.Cliente;
+import model.Usuario;
 
 /**
  *
  * @author wesley
  */
 public class FormPesquisar extends javax.swing.JFrame {
+    public static List<Cliente> clientes = new ArrayList();
+    public static List<Usuario> usuarios = new ArrayList();
+    public static int flag;
 
-    /**
-     * Creates new form FormPesquisar
-     */
-    public FormPesquisar() {
+    public FormPesquisar(int flag) {
         initComponents();
+        configurarFormulario();
+        this.flag = flag;
+        
+        try {
+            if (this.flag == 0) {
+                clientes = new ClienteDAO().listar();
+                preencherTabelaCliente(clientes);
+                
+            } else {
+                usuarios = new UsuarioDAO().listar();
+                preencherTabelaUsuario(usuarios);
+            }
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     /**
@@ -27,31 +46,135 @@ public class FormPesquisar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToggleButton1 = new javax.swing.JToggleButton();
+        lblPesquisar = new javax.swing.JLabel();
+        txtPesquisar = new javax.swing.JTextField();
+        scpPesquisar = new javax.swing.JScrollPane();
+        tbPesquisar = new javax.swing.JTable();
+        lblTotalRegistros = new javax.swing.JLabel();
+        txtTotalRegistros = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jToggleButton1.setText("jToggleButton1");
+        lblPesquisar.setText("Pesquisar");
+
+        txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyReleased(evt);
+            }
+        });
+
+        tbPesquisar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbPesquisar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPesquisarMouseClicked(evt);
+            }
+        });
+        scpPesquisar.setViewportView(tbPesquisar);
+
+        lblTotalRegistros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblTotalRegistros.setText("Total de registros");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addComponent(jToggleButton1)
-                .addContainerGap(142, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scpPesquisar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lblTotalRegistros)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblPesquisar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPesquisar)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addComponent(jToggleButton1)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPesquisar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotalRegistros)
+                    .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
+        // Pesquisar por NOME e LOGIN
+        String chave = txtPesquisar.getText();
+        
+        if (this.flag == 0) {
+            List<Cliente> result = null;
+            if (chave.isEmpty()) {
+                result = new ClienteDAO().listar();
+            } else {
+                result = new ClienteDAO().pesquisarPorNome(chave);
+            }
+
+            if (result != null) {
+                preencherTabelaCliente(result);
+            }
+        } else if (this.flag == 1) {
+            List<Usuario> result = null;
+            if (chave.isEmpty()) {
+                result = new UsuarioDAO().listar();
+            } else {
+                result = new UsuarioDAO().pesquisarPorLogin(chave);
+            }
+
+            if (result != null) {
+                preencherTabelaUsuario(result);
+            }
+        }
+    }//GEN-LAST:event_txtPesquisarKeyReleased
+
+    private void tbPesquisarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPesquisarMouseClicked
+        int linha = tbPesquisar.getSelectedRow();
+        
+        if (this.flag == 0) {
+            FormCadastrarCliente clientes = new FormCadastrarCliente(
+                tbPesquisar.getValueAt(linha, 0).toString(),
+                tbPesquisar.getValueAt(linha, 1).toString(),
+                tbPesquisar.getValueAt(linha, 2).toString(),
+                tbPesquisar.getValueAt(linha, 3).toString(),
+                Boolean.parseBoolean(tbPesquisar.getValueAt(linha, 4).toString())
+            );
+            clientes.setVisible(true);
+            this.dispose();
+        } else if (this.flag == 1) {
+            FormCadastrarUsuario usuarios = new FormCadastrarUsuario(
+                tbPesquisar.getValueAt(linha, 0).toString(),
+                tbPesquisar.getValueAt(linha, 1).toString(),
+                tbPesquisar.getValueAt(linha, 2).toString(),
+                Boolean.parseBoolean(tbPesquisar.getValueAt(linha, 3).toString())
+            );
+            usuarios.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_tbPesquisarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -83,12 +206,102 @@ public class FormPesquisar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormPesquisar().setVisible(true);
+                new FormPesquisar(0).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel lblPesquisar;
+    private javax.swing.JLabel lblTotalRegistros;
+    private javax.swing.JScrollPane scpPesquisar;
+    private javax.swing.JTable tbPesquisar;
+    private javax.swing.JTextField txtPesquisar;
+    private javax.swing.JTextField txtTotalRegistros;
     // End of variables declaration//GEN-END:variables
+
+    private void configurarFormulario() {
+        this.setTitle("Pesquisar");
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        txtTotalRegistros.setEnabled(false);
+    }
+    
+    private void configurarTabelaCliente() {
+        // Fechar apenas janela ativa
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        DefaultTableModel m = new DefaultTableModel(
+            new Object[]{
+                "ID",
+                "Nome",
+                "Telefone",
+                "E-mail",
+                "Status"
+            }, 0) {
+                
+            @Override
+            public boolean isCellEditable(int row, int colum) {
+                return false;
+            }
+        };
+        tbPesquisar.setModel(m);
+    }
+    
+    private void configurarTabelaUsuario() {
+        // Fechar apenas janela ativa
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        DefaultTableModel m = new DefaultTableModel(
+            new Object[]{
+                "ID",
+                "Usuário",
+                "Senha",
+                "Status"
+            }, 0) {
+                
+            @Override
+            public boolean isCellEditable(int row, int colum) {
+                return false;
+            }
+        };
+        tbPesquisar.setModel(m);
+    }
+    
+    private void preencherTabelaCliente(List<Cliente> lista) {
+        if (lista != null) {
+            if (lista.size() > 0) {
+                configurarTabelaCliente();
+                DefaultTableModel m = (DefaultTableModel)tbPesquisar.getModel();
+                for (Cliente cli : lista) {
+                    m.addRow(new Object[] {
+                        cli.getId(),
+                        cli.getNome(),
+                        cli.getTelefone(),
+                        cli.getEmail(),
+                        cli.isAtivo()
+                    });
+                }
+                tbPesquisar.setModel(m);
+                txtTotalRegistros.setText(Integer.toString(lista.size()));
+            }
+        }
+    }
+    
+    private void preencherTabelaUsuario(List<Usuario> lista) {
+        if (lista != null) {
+            if (lista.size() > 0) {
+                configurarTabelaUsuario();
+                DefaultTableModel m = (DefaultTableModel)tbPesquisar.getModel();
+                for (Usuario user : lista) {
+                    m.addRow(new Object[] {
+                        user.getId(),
+                        user.getLogin(),
+                        user.getSenha(),
+                        user.isAtivo()
+                    });
+                }
+                tbPesquisar.setModel(m);
+                txtTotalRegistros.setText(Integer.toString(lista.size()));
+            }
+        }
+    }
 }

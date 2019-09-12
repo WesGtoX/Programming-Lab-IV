@@ -347,7 +347,6 @@ public class FormProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void tbProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosMouseClicked
-        
         int linha = tbProdutos.getSelectedRow();
         if (linha >= 0) {
             txtId.setText(tbProdutos.getValueAt(linha, 0).toString());
@@ -357,7 +356,6 @@ public class FormProduto extends javax.swing.JFrame {
             Categoria c = (Categoria)tbProdutos.getValueAt(linha, 2);
             cbxCategoria.getModel().setSelectedItem(c);
         }
-        
     }//GEN-LAST:event_tbProdutosMouseClicked
 
     private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
