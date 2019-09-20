@@ -4,6 +4,7 @@ import controller.ClienteDAO;
 import controller.UsuarioDAO;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import model.Cliente;
@@ -48,6 +49,8 @@ public class FormPesquisar extends javax.swing.JFrame {
 
         lblPesquisar = new javax.swing.JLabel();
         txtPesquisar = new javax.swing.JTextField();
+        rdbId = new javax.swing.JRadioButton();
+        rdbNome = new javax.swing.JRadioButton();
         scpPesquisar = new javax.swing.JScrollPane();
         tbPesquisar = new javax.swing.JTable();
         lblTotalRegistros = new javax.swing.JLabel();
@@ -62,6 +65,10 @@ public class FormPesquisar extends javax.swing.JFrame {
                 txtPesquisarKeyReleased(evt);
             }
         });
+
+        rdbId.setText("ID");
+
+        rdbNome.setText("Nome");
 
         tbPesquisar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -88,17 +95,22 @@ public class FormPesquisar extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scpPesquisar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lblTotalRegistros)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scpPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTotalRegistros)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblPesquisar))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPesquisar)
+                        .addComponent(rdbId)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rdbNome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPesquisar)))
                 .addContainerGap())
@@ -107,16 +119,19 @@ public class FormPesquisar extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblPesquisar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPesquisar))
+                    .addComponent(rdbId)
+                    .addComponent(rdbNome)
+                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scpPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotalRegistros)
                     .addComponent(txtTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -131,7 +146,11 @@ public class FormPesquisar extends javax.swing.JFrame {
             if (chave.isEmpty()) {
                 result = new ClienteDAO().listar();
             } else {
-                result = new ClienteDAO().pesquisarPorNome(chave);
+                if (rdbNome.isSelected()) {
+                    result = new ClienteDAO().pesquisarPorNome(chave);
+                } else if (rdbId.isSelected()) {
+                    result = new ClienteDAO().pesquisarPorId(Integer.parseInt(chave));
+                }
             }
 
             if (result != null) {
@@ -142,7 +161,11 @@ public class FormPesquisar extends javax.swing.JFrame {
             if (chave.isEmpty()) {
                 result = new UsuarioDAO().listar();
             } else {
-                result = new UsuarioDAO().pesquisarPorLogin(chave);
+                if (rdbNome.isSelected()) {
+                    result = new UsuarioDAO().pesquisarPorLogin(chave);
+                } else if (rdbId.isSelected()) {
+                    result = new UsuarioDAO().pesquisarPorId(Integer.parseInt(chave));
+                }
             }
 
             if (result != null) {
@@ -214,6 +237,8 @@ public class FormPesquisar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblPesquisar;
     private javax.swing.JLabel lblTotalRegistros;
+    private javax.swing.JRadioButton rdbId;
+    private javax.swing.JRadioButton rdbNome;
     private javax.swing.JScrollPane scpPesquisar;
     private javax.swing.JTable tbPesquisar;
     private javax.swing.JTextField txtPesquisar;
@@ -225,6 +250,11 @@ public class FormPesquisar extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         txtTotalRegistros.setEnabled(false);
+
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(rdbId);
+        bg.add(rdbNome);
+        rdbNome.setSelected(true);
     }
     
     private void configurarTabelaCliente() {

@@ -131,4 +131,37 @@ public class UsuarioDAO {
             Conexao.desconectar(con);
         }
     }
+
+    public List<Usuario> pesquisarPorId(int id) {
+        try {
+            String SQL = "SELECT * FROM tb_usuario WHERE id=?";
+            
+            // Analisar sinstaticamente a instrução SQL
+            cmd = con.prepareStatement(SQL);
+//            cmd.setString(1,"%" + id + "%");
+            cmd.setInt(1, id);
+            
+            // Executar a instrução
+            ResultSet rs = cmd.executeQuery();
+            
+            List<Usuario> lista = new ArrayList<>();
+            while(rs.next()) {
+                lista.add(
+                    new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("login"),
+                        rs.getString("senha"),
+                        rs.getBoolean("ativo")
+                    )
+                );
+            }
+            return lista;
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            return null;
+        } finally {
+            Conexao.desconectar(con);
+        }
+    }
+
 }

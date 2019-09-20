@@ -452,7 +452,7 @@ public class FormProduto extends javax.swing.JFrame {
         txtId.setEnabled(false);
         txtTotalRegistros.setEnabled(false);
         
-        ButtonGroup bg =new ButtonGroup();
+        ButtonGroup bg = new ButtonGroup();
         bg.add(rdbId);
         bg.add(rdbNome);
         rdbNome.setSelected(true);

@@ -135,4 +135,38 @@ public class ClienteDAO {
             Conexao.desconectar(con);
         }
     }
+
+    public List<Cliente> pesquisarPorId(int id) {
+        try {
+            String SQL = "SELECT * FROM tb_cliente WHERE id=?";
+            
+            // Analisar sinstaticamente a instrução SQL
+            cmd = con.prepareStatement(SQL);
+//            cmd.setString(1,"%" + id + "%");
+            cmd.setInt(1, id);
+            
+            // Executar a instrução
+            ResultSet rs = cmd.executeQuery();
+            
+            List<Cliente> lista = new ArrayList<>();
+            while(rs.next()) {
+                lista.add(
+                    new Cliente(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("telefone"),
+                        rs.getString("email"),
+                        rs.getBoolean("ativo")
+                    )
+                );
+            }
+            return lista;
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            return null;
+        } finally {
+            Conexao.desconectar(con);
+        }
+    }
+
 }
