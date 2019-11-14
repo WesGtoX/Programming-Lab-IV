@@ -26,7 +26,7 @@ public class CategoriaDAO {
             return cat.getId();
             
         }catch(Exception e){
-            System.out.println("EROO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
             return -1;           
         }finally{
             this.em.close();

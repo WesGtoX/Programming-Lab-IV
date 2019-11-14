@@ -34,7 +34,7 @@ public class Produto implements Serializable{
     private Long id;
     
     
-     @Column(name = "nome", length = 100, nullable = false)
+    @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
     @Column(name = "quantidade")

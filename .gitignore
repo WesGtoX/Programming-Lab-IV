@@ -130,3 +130,5 @@ fabric.properties
 /LabIV_Controle_Produtos_JPA/dist/
 /LabIV_Controle_Produtos_JDBC_ORM/nbproject/private/
 /LabIV_Controle_Produtos_JDBC_ORM/dist/
+/Livraria_JasperReport_PostgreSQL/nbproject/private/
+/LabIV_Livraria_JasperReport_PostgreSQL/dist/

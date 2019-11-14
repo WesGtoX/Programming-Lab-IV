@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_editoras" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8413d164-93d0-46a5-9fed-a0271cae73f4">
+	<property name="ireport.zoom" value="2.357947691000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<queryString>
+		<![CDATA[SELECT * FROM editora ORDER BY id;]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="nome" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="79" uuid="44e4c439-6681-4f0e-9f69-6b2c160b9e13"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="81" y="17" width="406" height="34" uuid="ce9e0c27-877a-4bcf-9b74-875d0bb29a0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Livraria do João]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="51" width="406" height="13" uuid="a10cf6ef-73e6-4ca2-961a-124130e45d4a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Av. Costábile Romano, 2201, RIbeirânia - Ribeirão Preto - SP, 14096-900 - (16) 3603-7000]]></text>
+			</staticText>
+			<image>
+				<reportElement x="7" y="6" width="64" height="64" uuid="d9ed676d-3643-496b-b0ea-594c8b7e7a34"/>
+				<imageExpression><![CDATA["D:\\OneDrive\\ESCOLA\\FACULDADE\\UNAERP\\Stage_05-2019-2\\Laboratorio de Programacao IV\\Aulas\\Programming-Lab-IV\\LabIV_Livraria_JasperReport_PostgreSQL\\src\\images\\book-logo-64x64.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="153" y="0" width="261" height="35" uuid="2fd2e47f-024a-43be-9135-97f1859a60fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[Relatório de Editoras]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="71" height="30" uuid="df66f907-b2db-4c02-be97-030dc16443d9"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="0" width="483" height="30" uuid="25d1c3f2-cdfb-4a0b-ab03-9edfa2416f6a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[nome]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="71" height="20" uuid="d6579bbb-e42f-49d0-8ab3-d78c1021f5b8"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="0" width="483" height="20" uuid="250bbfd0-6086-4450-8556-30da1e53dc6b"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="510" y="21" width="13" height="20" uuid="c451c025-1064-41e5-a498-70d3aa6713a3"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="540" y="21" width="14" height="20" uuid="25a616f6-c51f-45a9-90c5-2d2670d68221"/>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="473" y="21" width="37" height="20" uuid="81748cb1-47f3-491a-84a2-3d1feb508d4f"/>
+				<text><![CDATA[Página]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="523" y="21" width="17" height="20" uuid="9cd82886-6d7b-4ad7-aad3-3c303301572c"/>
+				<text><![CDATA[de]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
